@@ -18,3 +18,5 @@ buildNumber.properties
 .classpath
 
 !/pom.xml
+.RPC-SWX.iml
+.gitignore
