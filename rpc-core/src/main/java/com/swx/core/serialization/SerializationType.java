@@ -3,7 +3,7 @@ package com.swx.core.serialization;
 import lombok.Getter;
 
 public enum SerializationType {
-    HESSIAN((byte) 0),JSON((byte) 1);
+    HESSIAN((byte) 0),JSON((byte) 1) , FASTJSON((byte)2);
     @Getter
     private byte type;
     SerializationType(byte type){
@@ -21,12 +21,13 @@ public enum SerializationType {
     }
     public static SerializationType parseByType(byte type){
         for(SerializationType serializationType:SerializationType.values()){
-            if(serializationType.getType()==type){
+                if(serializationType.getType()==type){
                 return serializationType;
             }
         }
         return HESSIAN;
     }
+
 
 
 

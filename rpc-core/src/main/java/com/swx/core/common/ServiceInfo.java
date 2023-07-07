@@ -23,7 +23,7 @@ public class ServiceInfo {
     /**
      * 端口
      */
-    private String port;
+    private Integer port;
 
 
 }
