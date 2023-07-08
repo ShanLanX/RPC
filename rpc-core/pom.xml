@@ -20,7 +20,7 @@
         <version>2.5.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.swx</groupId>
+    <groupId>com.swx.rpc</groupId>
     <artifactId>rpc-core</artifactId>
     <name>rpc-core</name>
     <version>1.0</version>
