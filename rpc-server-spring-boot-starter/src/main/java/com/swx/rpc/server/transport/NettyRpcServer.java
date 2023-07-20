@@ -1,8 +1,10 @@
 package com.swx.rpc.server.transport;
 
-import com.rrtv.rpc.core.codec.RpcDecoder;
-import com.rrtv.rpc.core.codec.RpcEncoder;
+
+import com.swx.rpc.core.coder.RpcDecoder;
+import com.swx.rpc.core.coder.RpcEncoder;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -38,6 +40,9 @@ public class NettyRpcServer implements RpcServer{
 
                         }
                     });
+            // sync()表示进程会被阻塞
+            ChannelFuture channelFuture=bootstrap.bind(serverAddress,port).sync();
+            channelFuture.channel().closeFuture().sync();
 
         }
         catch (Exception e){

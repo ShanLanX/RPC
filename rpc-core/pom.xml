@@ -10,8 +10,12 @@
                 <configuration>
                     <source>8</source>
                     <target>8</target>
+                    <compilerArguments>
+                        <bootclasspath>${java.home}/lib/rt.jar</bootclasspath>
+                    </compilerArguments>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
     <parent>
@@ -122,5 +126,10 @@
         </dependency>
 
     </dependencies>
+
+
+
+
+
 
 </project>

@@ -1,11 +1,12 @@
 package com.swx.rpc.server.handler;
 
-import com.rrtv.rpc.core.common.RpcRequest;
-import com.rrtv.rpc.core.common.RpcResponse;
-import com.rrtv.rpc.core.protocol.MessageHeader;
-import com.rrtv.rpc.core.protocol.MessageProtocol;
-import com.rrtv.rpc.core.protocol.MsgStatus;
-import com.rrtv.rpc.core.protocol.MsgType;
+
+import com.swx.rpc.core.common.RpcRequest;
+import com.swx.rpc.core.common.RpcResponse;
+import com.swx.rpc.core.protocol.MessageHeader;
+import com.swx.rpc.core.protocol.MessageProtocol;
+import com.swx.rpc.core.protocol.MsgStatus;
+import com.swx.rpc.core.protocol.MsgType;
 import com.swx.rpc.server.store.LocalServerCache;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -31,11 +32,11 @@ public class RpcRequestHandler extends SimpleChannelInboundHandler<MessageProtoc
             try {
                 Object result = handle(rpcRequestMessageProtocol.getBody());
                 response.setData(result);
-                header.setStatus(MsgStatus.SUCCESS.getCode());
+                header.setMsgStatus(MsgStatus.SUCCESS.getStatus());
                 resProtocol.setHeader(header);
                 resProtocol.setBody(response);
             } catch (Throwable throwable) {
-                header.setStatus(MsgStatus.FAIL.getCode());
+                header.setMsgStatus(MsgStatus.FAIL.getStatus());
                 response.setMessage(throwable.toString());
                 log.error("process request {} error", header.getRequestId(), throwable);
             }
@@ -55,10 +56,10 @@ public class RpcRequestHandler extends SimpleChannelInboundHandler<MessageProtoc
     private Object handle(RpcRequest request) {
         try {
             // 获取本地缓存的服务
-            Object bean = LocalServerCache.get(request.getServiceName());
+            Object bean = LocalServerCache.get(request.getServiceKey());
 
             if (bean == null) {
-                throw new RuntimeException(String.format("service not exist: %s !", request.getServiceName()));
+                throw new RuntimeException(String.format("service not exist: %s !", request.getServiceKey()));
             }
             // 反射调用
             Method method = bean.getClass().getMethod(request.getMethod(), request.getParameterTypes());
