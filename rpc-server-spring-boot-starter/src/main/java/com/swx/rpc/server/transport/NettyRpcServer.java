@@ -37,7 +37,6 @@ public class NettyRpcServer implements RpcServer{
                                     .addLast(new RpcDecoder())
                                     .addLast(new RpcEncoder());
 
-
                         }
                     });
             // sync()表示进程会被阻塞

@@ -12,10 +12,12 @@
   <groupId>com.swx</groupId>
   <artifactId>rpc</artifactId>
   <packaging>pom</packaging>
-    <modules>
-        <module>rpc-server-spring-boot-starter</module>
-    </modules>
     <version>1.0</version>
+  <modules>
+    <module>rpc-server-spring-boot-starter</module>
+    <module>rpc-core</module>
+    <module>rpc-client-spring-boot-starter</module>
+  </modules>
 
   <dependencies>
     <dependency>

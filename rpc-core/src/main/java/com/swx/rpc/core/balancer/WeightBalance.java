@@ -7,6 +7,7 @@ import java.util.List;
 public class WeightBalance implements LoadBalance{
     @Override
     public ServiceInfo chooseService(List<ServiceInfo> services) {
+
         return null;
     }
 }

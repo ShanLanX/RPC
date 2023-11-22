@@ -26,6 +26,7 @@ public class RpcServerAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+
     public RegistryService registryService() {
         switch (rpcServerProperties.getRegistryType()) {
             case "ZOOKEEPER": {

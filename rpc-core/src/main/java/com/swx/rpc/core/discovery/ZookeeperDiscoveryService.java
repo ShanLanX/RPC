@@ -24,10 +24,10 @@ public class ZookeeperDiscoveryService implements DiscoveryService{
     private ServiceDiscovery<ServiceInfo> serviceDiscovery;
 // 负载均衡策略
     private LoadBalance loadBalance;
-    public ZookeeperDiscoveryService(String registryAddr,LoadBalance loadBalance){
+    public ZookeeperDiscoveryService(String discoveryAddr,LoadBalance loadBalance){
         this.loadBalance=loadBalance;
         try{
-            CuratorFramework client = CuratorFrameworkFactory.newClient(registryAddr, new ExponentialBackoffRetry(BASE_SLEEP_TIME_MS, MAX_RETRIES));
+            CuratorFramework client = CuratorFrameworkFactory.newClient(discoveryAddr, new ExponentialBackoffRetry(BASE_SLEEP_TIME_MS, MAX_RETRIES));
             client.start();
             JsonInstanceSerializer<ServiceInfo> serializer = new JsonInstanceSerializer<>(ServiceInfo.class);
             this.serviceDiscovery = ServiceDiscoveryBuilder.builder(ServiceInfo.class)
