@@ -11,48 +11,57 @@ import java.util.UUID;
  */
 @Data
 public class MessageHeader implements Serializable {
+
+    /*
+    +---------------------------------------------------------------+
+    | 魔数 2byte | 协议版本号 1byte | 序列化算法 1byte | 报文类型 1byte  |
+    +---------------------------------------------------------------+
+    | 状态 1byte |        消息 ID 32byte     |      数据长度 4byte     |
+    +---------------------------------------------------------------+
+    */
     /**
-     * 魔数
+     *  魔数
      */
     private short magic;
+
     /**
-     * 版本号
+     *  协议版本号
      */
     private byte version;
+
     /**
-     * 序列化算法
+     *  序列化算法
      */
     private byte serialization;
 
     /**
-     * 报文类型
+     *  报文类型
      */
     private byte msgType;
 
     /**
-     * 状态
+     *  状态
      */
-    private  byte msgStatus;
+    private byte MsgStatus;
+
     /**
-     * 消息ID
+     *  消息 ID
      */
-    // TODO 获取修改为messageID更为合适
     private String requestId;
+
     /**
-     * 消息长度
+     *  数据长度
      */
     private int msgLen;
+
+
     public static MessageHeader build(String serialization){
         MessageHeader messageHeader = new MessageHeader();
         messageHeader.setMagic(ProtocolConstants.MAGIC);
         messageHeader.setVersion(ProtocolConstants.VERSION);
-        // 设置请求的唯一id
         messageHeader.setRequestId(UUID.randomUUID().toString().replaceAll("-",""));
         messageHeader.setMsgType(MsgType.REQUEST.getType());
         messageHeader.setSerialization(SerializationType.parseByName(serialization).getType());
         return messageHeader;
-
     }
-
-
 }

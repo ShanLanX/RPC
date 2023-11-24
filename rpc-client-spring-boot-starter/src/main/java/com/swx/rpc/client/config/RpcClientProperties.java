@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
 @Data
-@ConfigurationProperties(prefix = "rpc.server")
+
 public class RpcClientProperties {
     /**
      * 负载均衡
@@ -18,7 +18,7 @@ public class RpcClientProperties {
     /**
      * 服务发现
      */
-    private String disconveryAddr="127.0.0.1:2181";
+    private String discoveryAddr="127.0.0.1:2181";
     /**
      * 服务发现类型
      */

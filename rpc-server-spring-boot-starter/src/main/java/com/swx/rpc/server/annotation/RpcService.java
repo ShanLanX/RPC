@@ -19,5 +19,7 @@ public @interface RpcService {
 
     Class<?> interfaceType() default Object.class;
 
+    String version() default "1.0";
+
 
 }

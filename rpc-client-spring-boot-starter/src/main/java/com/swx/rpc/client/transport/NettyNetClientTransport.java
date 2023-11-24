@@ -9,6 +9,7 @@ import com.swx.rpc.core.common.RpcResponse;
 import com.swx.rpc.core.protocol.MessageProtocol;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -19,15 +20,16 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-public class NettyNetClientTransport implements NetClientTransport{
+public class NettyNetClientTransport implements NetClientTransport {
+
     private final Bootstrap bootstrap;
     private final EventLoopGroup eventLoopGroup;
     private final RpcResponseHandler handler;
 
+
     public NettyNetClientTransport() {
         bootstrap = new Bootstrap();
         eventLoopGroup = new NioEventLoopGroup(4);
-        // 返回响应
         handler = new RpcResponseHandler();
         bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class)
                 .handler(new ChannelInitializer<SocketChannel>() {
@@ -44,38 +46,27 @@ public class NettyNetClientTransport implements NetClientTransport{
                     }
                 });
     }
+
     @Override
     public MessageProtocol<RpcResponse> sendRequest(RequestMetadata metadata) throws Exception {
         MessageProtocol<RpcRequest> protocol = metadata.getProtocol();
         RpcFuture<MessageProtocol<RpcResponse>> future = new RpcFuture<>();
-        String requestId=protocol.getHeader().getRequestId();
-        // 保存请求id和request的映射关系
-        LocalRpcResponseCache.add(requestId,future);
-        // 使用TCP连接
+        LocalRpcResponseCache.add(protocol.getHeader().getRequestId(), future);
+
+        // TCP 连接
         ChannelFuture channelFuture = bootstrap.connect(metadata.getAddress(), metadata.getPort()).sync();
-        channelFuture.addListener(a->{
-            if(channelFuture.isSuccess()){
-                log.info("connect {} on port {} success!",metadata.getAddress(),metadata.getPort());
-            }
-            else {
-                log.info("connect {} on port {} failed!",metadata.getAddress(),metadata.getPort());
+        channelFuture.addListener((ChannelFutureListener) arg0 -> {
+            if (channelFuture.isSuccess()) {
+                log.info("connect rpc server {} on port {} success.", metadata.getAddress(), metadata.getPort());
+            } else {
+                log.error("connect rpc server {} on port {} failed.", metadata.getAddress(), metadata.getPort());
                 channelFuture.cause().printStackTrace();
                 eventLoopGroup.shutdownGracefully();
             }
-
         });
         // 写入数据
         channelFuture.channel().writeAndFlush(protocol);
         return metadata.getTimeout() != null ? future.get(metadata.getTimeout(), TimeUnit.MILLISECONDS) : future.get();
-
-
-
-
-
-
-
-
-
     }
-
 }
+

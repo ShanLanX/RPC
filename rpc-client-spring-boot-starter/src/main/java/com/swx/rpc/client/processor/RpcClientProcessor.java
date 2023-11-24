@@ -36,16 +36,15 @@ public class RpcClientProcessor implements BeanFactoryPostProcessor, Application
             String beanClassName=beanDefinition.getBeanClassName();
             if(beanClassName!=null){
                 Class<?> clazz= ClassUtils.resolveClassName(beanClassName,this.getClass().getClassLoader());
-                    ReflectionUtils.doWithFields(clazz,field -> {
-                        RpcAutowired rpcAutowired= AnnotationUtils.getAnnotation(field,RpcAutowired.class);
-                    if(rpcAutowired!=null){
-                        Object bean=applicationContext.getBean(clazz);
-                        field.setAccessible(true);
-                        //  修改为代理对象
-                        ReflectionUtils.setField(field,bean,clientStubProxyFactory.getProxy(field.getType(), rpcAutowired.version(), discoveryService,rpcClientProperties));
+                ReflectionUtils.doWithFields(clazz,field -> {
+                    RpcAutowired rpcAutowired= AnnotationUtils.getAnnotation(field,RpcAutowired.class);
+                if(rpcAutowired!=null){
+                    Object bean=applicationContext.getBean(clazz);
+                    field.setAccessible(true);
+                    //  修改为代理对象
+                    ReflectionUtils.setField(field,bean,clientStubProxyFactory.getProxy(field.getType(), rpcAutowired.version(), discoveryService,rpcClientProperties));
 
-                    }
-                }
+                } }
 
                 );
 

@@ -43,8 +43,9 @@ public class ClientStubInvocationHandler implements InvocationHandler {
         }
             // 设置请求头
             MessageProtocol<RpcRequest> messageProtocol=new MessageProtocol<>();
-            messageProtocol.setHeader(MessageHeader.build(rpcClientProperties.getSerialization()));
-
+//            messageProtocol.setHeader(MessageHeader.buildHeader(rpcClientProperties.getSerialization()));
+            MessageHeader messageHeader=MessageHeader.build(rpcClientProperties.getSerialization());
+            messageProtocol.setHeader(messageHeader);
             // 设置请求体
             RpcRequest rpcRequest=new RpcRequest();
             rpcRequest.setMethod(method.getName());
@@ -54,13 +55,12 @@ public class ClientStubInvocationHandler implements InvocationHandler {
             messageProtocol.setBody(rpcRequest);
 
             // 发送网络请求 拿到结果
-            MessageProtocol<RpcResponse> responseMessageProtocol= NetClientTransportFactroy.getNetClient("Nacos").
+            MessageProtocol<RpcResponse> responseMessageProtocol= NetClientTransportFactroy.getNetClient("Netty").
                     sendRequest(RequestMetadata.builder().protocol(messageProtocol).address(serviceInfo.getAddress()).
                             port(serviceInfo.getPort()).timeout(rpcClientProperties.getTimeout()).build());
             if(responseMessageProtocol==null){
                 log.error("请求超时");
                 throw new RpcException("rpc调用结果失败，请求超时"+rpcClientProperties.getTimeout());
-
             }
             if(!MsgStatus.isSuccess(responseMessageProtocol.getHeader().getMsgStatus())){
                 log.error("rpc调用失败，message:{}",responseMessageProtocol.getBody().getMessage());
@@ -70,12 +70,5 @@ public class ClientStubInvocationHandler implements InvocationHandler {
         return responseMessageProtocol.getBody().getData();
 
         }
-
-
-
-
-
-
-
 
 }

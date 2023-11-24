@@ -23,7 +23,7 @@ public class LocalRpcResponseCache {
      *
      */
     public static  void fillResponse(String requestId,MessageProtocol<RpcResponse> response){
-        RpcFuture<MessageProtocol<RpcResponse>> future=new RpcFuture<>();
+        RpcFuture<MessageProtocol<RpcResponse>> future = requestResponseCache.get(requestId);
         // 设置响应
         future.setResponse(response);
         // 响应处理完毕 移除缓存
