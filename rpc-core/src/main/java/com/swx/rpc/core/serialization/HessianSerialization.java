@@ -23,7 +23,10 @@ public class HessianSerialization implements RpcSerialization{
             hessianOutput.flush();
             results = os.toByteArray();
         } catch (Exception e) {
+            e.printStackTrace();
+
             throw new SerializationException(e);
+
         }
 
         return results;

@@ -2,8 +2,10 @@ package com.swx.rpc.core.common;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class RpcResponse {
+public class RpcResponse  implements Serializable {
     /**
      * 响应数据
      */

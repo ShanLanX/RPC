@@ -1,8 +1,8 @@
 package com.swx.rpc.provider.service;
 
 
-import com.rrtv.rpc.server.annotation.RpcService;
 import com.swx.rpc.api.service.HelloWorldService;
+import com.swx.rpc.server.annotation.RpcService;
 //import com.swx.rpc.server.annotation.RpcService;
 
 @RpcService(interfaceType = HelloWorldService.class, version = "1.0")

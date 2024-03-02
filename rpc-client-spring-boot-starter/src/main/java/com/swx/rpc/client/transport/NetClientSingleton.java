@@ -14,8 +14,6 @@ public class NetClientSingleton {
                         }
                         default:
                             netClientTransport=new NettyNetClientTransport();
-
-
                       }
                 }
             }

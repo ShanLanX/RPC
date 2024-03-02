@@ -2,8 +2,10 @@ package com.swx.rpc.core.common;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class RpcRequest {
+public class RpcRequest implements Serializable {
     /**
      * 请求的服务名称 名称+版本号
      */

@@ -32,7 +32,7 @@ public class NettyRpcServer implements RpcServer {
             ServerBootstrap bootstrap = new ServerBootstrap();
             bootstrap.group(boss, worker)
                     .channel(NioServerSocketChannel.class)
-                    .handler(new ChannelInitializer<SocketChannel>() {
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             socketChannel.pipeline()
@@ -50,6 +50,8 @@ public class NettyRpcServer implements RpcServer {
             log.info("server addr {} started on port {}", serverAddress, port);
             channelFuture.channel().closeFuture().sync();
         } catch (Exception e) {
+            System.out.println(e.getMessage());
+            log.error("server start fails");
 
         } finally {
             boss.shutdownGracefully();

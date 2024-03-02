@@ -47,7 +47,7 @@ public class RpcServerProvider implements BeanPostProcessor, CommandLineRunner {
     }
 
     @Override
-    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         RpcService rpcService = bean.getClass().getAnnotation(RpcService.class);
         if(rpcService!=null){
             String serviceName=rpcService.interfaceType().getName();
@@ -78,6 +78,7 @@ public class RpcServerProvider implements BeanPostProcessor, CommandLineRunner {
 
         return bean;
     }
+
 
 
 }
